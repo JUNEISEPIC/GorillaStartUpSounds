@@ -5,7 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 
-[BepInPlugin("skellon.startupsounds", "Gorilla Startup Sounds", "1.0.0")]
+[BepInPlugin("skellon.june.startupsounds", "Gorilla Startup Sounds", "1.0.0")]
 public class GorillaStartUpSounds : BaseUnityPlugin
 {
     internal static ConfigEntry<string> SoundPath = null!;
@@ -39,3 +39,4 @@ public class GorillaStartUpSounds : BaseUnityPlugin
         }
     }
 }
+
