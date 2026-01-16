@@ -1,97 +1,42 @@
 ﻿using BepInEx;
+using BepInEx.Configuration;
 using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
-using GorillaLocomotion;
 
-[BepInPlugin(PluginGuid, PluginName, PluginVersion)]
+[BepInPlugin("skellon.june.startupsounds", "Gorilla Startup Sounds", "1.0.0")]
 public class GorillaStartUpSounds : BaseUnityPlugin
 {
-    private const string PluginGuid = "juneisepic.gorillatag.startupsounds";
-    private const string PluginName = "GorillaStartUpSounds";
-    private const string PluginVersion = "1.0.0";
-
-    private const string SoundsFolderName = "sounds";
-    private const string FallbackSoundUrl =
-        "https://raw.githubusercontent.com/JUNEISEPIC/GorillaStartUpSounds/main/Main-StartUp-Sound.mp3";
-
-    private static bool hasPlayed;
-
-    private AudioSource audioSource;
-    private GameObject audioObject;
-
+    internal static ConfigEntry<string> SoundPath = null!;
     private void Awake()
     {
-        if (hasPlayed)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        hasPlayed = true;
-        DontDestroyOnLoad(gameObject);
-
-        audioObject = new GameObject("GorillaStartUpSounds_Audio");
-        DontDestroyOnLoad(audioObject);
-
-        audioSource = audioObject.AddComponent<AudioSource>();
-        audioSource.playOnAwake = false;
-        audioSource.loop = false;
-        audioSource.spatialBlend = 0f;
-        audioSource.volume = 1f;
-
-        StartCoroutine(WaitForPlayer());
+        GorillaTagger.OnPlayerSpawned(() => StartCoroutine(PlayStartupSound()));
+        SoundPath = Config.Bind(new ConfigDefinition("General", "Sound Path"), "null", new("The path to the MP3 that gets played on startup"));
     }
-
-    private IEnumerator WaitForPlayer()
-    {
-        while (GTPlayer.Instance == null)
-            yield return null;
-
-        yield return new WaitForSeconds(1.2f);
-
-        yield return StartCoroutine(PlayStartupSound());
-    }
-
     private IEnumerator PlayStartupSound()
     {
-        string pluginDir = Path.GetDirectoryName(Info.Location);
-        string soundsDir = Path.Combine(pluginDir, SoundsFolderName);
-
-        if (Directory.Exists(soundsDir))
+        yield return new WaitForSeconds(1f);
+        if (SoundPath.Value == (string)SoundPath.DefaultValue || !File.Exists(SoundPath.Value))
         {
-            string[] files = Directory.GetFiles(soundsDir, "*.mp3");
-            if (files.Length > 0)
-            {
-                yield return StartCoroutine(LoadAndPlay("file://" + files[0]));
-                yield break;
-            }
+            yield return LoadAndPlay("https://raw.githubusercontent.com/JUNEISEPIC/GorillaStartUpSounds/main/Main-StartUp-Sound.mp3");
+            yield break;
         }
 
-        yield return StartCoroutine(LoadAndPlay(FallbackSoundUrl));
+        yield return LoadAndPlay("file://" + SoundPath.Value);
     }
-
     private IEnumerator LoadAndPlay(string url)
     {
-        UnityWebRequest req =
-            UnityWebRequestMultimedia.GetAudioClip(url, AudioType.MPEG);
+        UnityWebRequest req = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.MPEG);
 
         yield return req.SendWebRequest();
+        if (req.result == UnityWebRequest.Result.Success)
+        {
+            AudioClip clip = DownloadHandlerAudioClip.GetContent(req);
 
-#if UNITY_2020_1_OR_NEWER
-        if (req.result != UnityWebRequest.Result.Success)
-            yield break;
-#else
-        if (req.isNetworkError || req.isHttpError)
-            yield break;
-#endif
-
-        AudioClip clip = DownloadHandlerAudioClip.GetContent(req);
-        if (clip == null)
-            yield break;
-
-        audioSource.clip = clip;
-        audioSource.Play();
+            if (clip is null) yield break;
+            VRRig.LocalRig.leftHandPlayer.GTPlayOneShot(clip);
+        }
     }
 }
+
