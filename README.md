@@ -1,7 +1,7 @@
 # GorillaStartUpSounds
 This Gorilla Tag mod plays a fun startup sound when you launch the game, and lets you pick it if you would like!
 ![downloads](https://img.shields.io/github/downloads/JUNEISEPIC/GorillaStartUpSounds/total)
-![LatestRelease]("https://img.shields.io/github/Release/JUNEISEPIC/GorillaStartUpSounds?label=Version&style=for-the-badge&color=blue" alt="Version">
+![LatestRelease](https://img.shields.io/github/v/release/JUNEISEPIC/GorillaStartUpSounds?label=Version&style=for-the-badge&color=blue" alt="Version">)
 
 ## How to install
 All you have to do is install the .zip in the latest release, extract it and put the full thing inside of your plugins and press install/update.
