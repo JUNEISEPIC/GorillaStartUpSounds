@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36623.8 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GorillaStartUpSounds", "GorillaStartUpSounds\GorillaStartUpSounds.csproj", "{832AE567-0B69-4A41-A9D2-64649E545669}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{832AE567-0B69-4A41-A9D2-64649E545669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{832AE567-0B69-4A41-A9D2-64649E545669}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{832AE567-0B69-4A41-A9D2-64649E545669}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{832AE567-0B69-4A41-A9D2-64649E545669}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C0B75204-A208-45B3-A57E-B9346C2E8937}
+	EndGlobalSection
+EndGlobal
